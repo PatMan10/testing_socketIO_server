@@ -1,4 +1,4 @@
-This a light basic socket.io server built to demonstrate a method for successfully testing the servers socket.io functionality. It allows you to emit events, receive responses and test the responses.
+This a light, basic, node.js based, socket.io server built to demonstrate a method for successfully testing the servers socket.io functionality. It allows you to emit events, receive responses and test the responses.
 
 Steps to get, run and see the solution.
 
