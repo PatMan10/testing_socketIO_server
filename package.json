@@ -4,9 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch-All"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "jest": "^24.0.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "winston": "^2.4.4"
+  }
 }
