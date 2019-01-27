@@ -82,6 +82,8 @@ describe("test suit: Echo & Bello", () => {
 
       // wait for server to respond
       const { status, message } = await serverResponse;
+
+      // check the response data
       expect(status).toBe(200);
       expect(message).toBe("SERVER ECHO");
     } catch (error) {
