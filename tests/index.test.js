@@ -7,29 +7,31 @@ const logger = require("../utils/logger");
 // fail: reject a error
 const initSocket = () => {
   return new Promise((resolve, reject) => {
-    // create socket for communication
-    const socket = io("localhost:5000", {
-      "reconnection delay": 0,
-      "reopen delay": 0,
-      "force new connection": true
-    });
+      // create socket for communication
+      const socket = io("localhost:5000", {
+        "reconnection delay": 0,
+        "reopen delay": 0,
+        "force new connection": true
+      });
 
-    // define event handler for sucessfull connection
-    socket.on(ev.CONNECT, () => {
-      logger.info("connected");
-      resolve(socket);
-    });
+      // define event handler for sucessfull connection
+      socket.on(ev.CONNECT, () => {
+        logger.info("connected");
+        resolve(socket);
+      });
 
-    // if connection takes longer than 5 seconds throw error
-    setTimeout(() => {
-      reject(new Error("Failed to connect wihtin 5 seconds."));
-    }, 5000);
-  });
+      // if connection takes longer than 5 seconds throw error
+      setTimeout(() => {
+        reject(new Error("Failed to connect wihtin 5 seconds."));
+      }, 5000);
+    }
+  );
 };
+
 
 // destroySocket returns a promise
 // success: resolve true
-// fail: reject false
+// fail: resolve false
 const destroySocket = socket => {
   return new Promise((resolve, reject) => {
     // check if socket connected
@@ -48,74 +50,66 @@ const destroySocket = socket => {
 
 describe("test suit: Echo & Bello", () => {
   test("test: ECHO", async () => {
-    try {
-      // create socket for communication
-      const socketClient = await initSocket();
+    // create socket for communication
+    const socketClient = await initSocket();
 
-      // create new promise for server response
-      const serverResponse = new Promise((resolve, reject) => {
-        // define a handler for the test event
-        socketClient.on(ev.res_ECHO, data4Client => {
-          //process data received from server
-          const { message } = data4Client;
-          logger.info("Server says: " + message);
+    // create new promise for server response
+    const serverResponse = new Promise((resolve, reject) => {
+      // define a handler for the test event
+      socketClient.on(ev.res_ECHO, data4Client => {
+        //process data received from server
+        const { message } = data4Client;
+        logger.info("Server says: " + message);
 
-          // destroy socket after server responds
-          destroySocket(socketClient);
+        // destroy socket after server responds
+        destroySocket(socketClient);
 
-          // return data for testing
-          resolve(data4Client);
-        });
-
-        // if response takes longer than 5 seconds throw error
-        setTimeout(() => {
-          reject(new Error("Failed to get reponse, connection timed out..."));
-        }, 5000);
+        // return data for testing
+        resolve(data4Client);
       });
 
-      // define data 4 server
-      const data4Server = { message: "CLIENT ECHO" };
+      // if response takes longer than 5 seconds throw error
+      setTimeout(() => {
+        reject(new Error("Failed to get reponse, connection timed out..."));
+      }, 5000);
+    });
 
-      // emit event with data to server
-      logger.info("Emitting ECHO event");
-      socketClient.emit(ev.com_ECHO, data4Server);
+    // define data 4 server
+    const data4Server = { message: "CLIENT ECHO" };
 
-      // wait for server to respond
-      const { status, message } = await serverResponse;
+    // emit event with data to server
+    logger.info("Emitting ECHO event");
+    socketClient.emit(ev.com_ECHO, data4Server);
 
-      // check the response data
-      expect(status).toBe(200);
-      expect(message).toBe("SERVER ECHO");
-    } catch (error) {
-      logger.error(error);
-    }
+    // wait for server to respond
+    const { status, message } = await serverResponse;
+
+    // check the response data
+    expect(status).toBe(200);
+    expect(message).toBe("SERVER ECHO");
   });
 
   test("test BELLO", async () => {
-    try {
-      const socketClient = await initSocket();
-      const serverResponse = new Promise((resolve, reject) => {
-        socketClient.on(ev.res_BELLO, data4Client => {
-          const { message } = data4Client;
-          logger.info("Server says: " + message);
-          destroySocket(socketClient);
-          resolve(data4Client);
-        });
-
-        setTimeout(() => {
-          reject(new Error("Failed to get reponse, connection timed out..."));
-        }, 5000);
+    const socketClient = await initSocket();
+    const serverResponse = new Promise((resolve, reject) => {
+      socketClient.on(ev.res_BELLO, data4Client => {
+        const { message } = data4Client;
+        logger.info("Server says: " + message);
+        destroySocket(socketClient);
+        resolve(data4Client);
       });
 
-      const data4Server = { message: "CLIENT BELLO" };
-      logger.info("Emitting BELLO event");
-      socketClient.emit(ev.com_BELLO, data4Server);
+      setTimeout(() => {
+        reject(new Error("Failed to get reponse, connection timed out..."));
+      }, 5000);
+    });
 
-      const { status, message } = await serverResponse;
-      expect(status).toBe(200);
-      expect(message).toBe("SERVER BELLO");
-    } catch (error) {
-      logger.error(error);
-    }
+    const data4Server = { message: "CLIENT BELLO" };
+    logger.info("Emitting BELLO event");
+    socketClient.emit(ev.com_BELLO, data4Server);
+
+    const { status, message } = await serverResponse;
+    expect(status).toBe(200);
+    expect(message).toBe("SERVER BELLO");
   });
 });
