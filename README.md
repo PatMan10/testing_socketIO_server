@@ -11,4 +11,4 @@ Steps to get, run and see the solution.
 7. Study the output in the shells.
 8. Open REPO in your favorite code editor.
 9. Study the code, it's not a lot.
-10. Hack at it and build you're own socket.io server! :)
+10. Hack at it and build your own socket.io server! :)
