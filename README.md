@@ -1,3 +1,5 @@
+# Integration Testing a SocketIO Server
+
 This a light, basic, node.js based, socket.io server built to demonstrate a method for successfully testing the servers socket.io functionality. It allows you to emit events, receive responses and test the responses.
 
 Steps to get, run and see the solution.
@@ -6,7 +8,7 @@ Steps to get, run and see the solution.
 2. Clone this REPO.
 3. Change directory into REPO with both shells.
 4. In shell 1, run "npm install" to get dependencies.
-5. In shell 1, run "node index.js" to start the server.
+5. In shell 1, run "npm start" to start the server.
 6. In shell 2, run "npm test" to run the automated tests.
 7. Study the output in the shells.
 8. Open REPO in your favorite code editor.

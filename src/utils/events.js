@@ -3,9 +3,11 @@ module.exports = {
 
   DISCONNECT: "disconnect",
 
-  com_ECHO: "#echo",
-  res_ECHO: "@echo",
+  // requests
+  req_ECHO: "#echo",
+  req_BELLO: "#bello",
 
-  com_BELLO: "#bello",
+  // responses
+  res_ECHO: "@echo",
   res_BELLO: "@bello"
 };

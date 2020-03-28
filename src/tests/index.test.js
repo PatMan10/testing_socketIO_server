@@ -7,27 +7,25 @@ const logger = require("../utils/logger");
 // fail: reject a error
 const initSocket = () => {
   return new Promise((resolve, reject) => {
-      // create socket for communication
-      const socket = io("localhost:5000", {
-        "reconnection delay": 0,
-        "reopen delay": 0,
-        "force new connection": true
-      });
+    // create socket for communication
+    const socket = io("localhost:5000", {
+      "reconnection delay": 0,
+      "reopen delay": 0,
+      "force new connection": true
+    });
 
-      // define event handler for sucessfull connection
-      socket.on(ev.CONNECT, () => {
-        logger.info("connected");
-        resolve(socket);
-      });
+    // define event handler for sucessfull connection
+    socket.on(ev.CONNECT, () => {
+      logger.info("connected");
+      resolve(socket);
+    });
 
-      // if connection takes longer than 5 seconds throw error
-      setTimeout(() => {
-        reject(new Error("Failed to connect wihtin 5 seconds."));
-      }, 5000);
-    }
-  );
+    // if connection takes longer than 5 seconds throw error
+    setTimeout(() => {
+      reject(new Error("Failed to connect wihtin 5 seconds."));
+    }, 5000);
+  });
 };
-
 
 // destroySocket returns a promise
 // success: resolve true
@@ -45,6 +43,7 @@ const destroySocket = socket => {
       logger.info("no connection to break...");
       resolve(false);
     }
+    logger.info("---------------------------------");
   });
 };
 
@@ -79,7 +78,7 @@ describe("test suit: Echo & Bello", () => {
 
     // emit event with data to server
     logger.info("Emitting ECHO event");
-    socketClient.emit(ev.com_ECHO, data4Server);
+    socketClient.emit(ev.req_ECHO, data4Server);
 
     // wait for server to respond
     const { status, message } = await serverResponse;
@@ -106,7 +105,7 @@ describe("test suit: Echo & Bello", () => {
 
     const data4Server = { message: "CLIENT BELLO" };
     logger.info("Emitting BELLO event");
-    socketClient.emit(ev.com_BELLO, data4Server);
+    socketClient.emit(ev.req_BELLO, data4Server);
 
     const { status, message } = await serverResponse;
     expect(status).toBe(200);

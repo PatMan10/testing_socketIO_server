@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --watch-All"
+    "test": "jest --verbose --watch-All",
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,7 @@
     "winston": "^2.4.4"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
+    "jest": "^25.2.3",
     "socket.io-client": "^2.3.0"
   }
 }
