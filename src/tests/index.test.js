@@ -8,10 +8,13 @@ const logger = require("../utils/logger");
 const initSocket = () => {
   return new Promise((resolve, reject) => {
     // create socket for communication
-    const socket = io("localhost:5000", {
+
+    const port = process.env.PORT || 5000;
+
+    const socket = io(`localhost:${port}`, {
       "reconnection delay": 0,
       "reopen delay": 0,
-      "force new connection": true
+      "force new connection": true,
     });
 
     // define event handler for sucessfull connection
@@ -30,7 +33,7 @@ const initSocket = () => {
 // destroySocket returns a promise
 // success: resolve true
 // fail: resolve false
-const destroySocket = socket => {
+const destroySocket = (socket) => {
   return new Promise((resolve, reject) => {
     // check if socket connected
     if (socket.connected) {
@@ -55,7 +58,7 @@ describe("test suit: Echo & Bello", () => {
     // create new promise for server response
     const serverResponse = new Promise((resolve, reject) => {
       // define a handler for the test event
-      socketClient.on(ev.res_ECHO, data4Client => {
+      socketClient.on(ev.res_ECHO, (data4Client) => {
         //process data received from server
         const { message } = data4Client;
         logger.info("Server says: " + message);
@@ -91,7 +94,7 @@ describe("test suit: Echo & Bello", () => {
   test("test BELLO", async () => {
     const socketClient = await initSocket();
     const serverResponse = new Promise((resolve, reject) => {
-      socketClient.on(ev.res_BELLO, data4Client => {
+      socketClient.on(ev.res_BELLO, (data4Client) => {
         const { message } = data4Client;
         logger.info("Server says: " + message);
         destroySocket(socketClient);
