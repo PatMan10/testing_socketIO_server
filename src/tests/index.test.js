@@ -8,9 +8,7 @@ const logger = require("../utils/logger");
 const initSocket = () => {
   return new Promise((resolve, reject) => {
     // create socket for communication
-
     const port = process.env.PORT || 5000;
-
     const socket = io(`localhost:${port}`, {
       "reconnection delay": 0,
       "reopen delay": 0,
